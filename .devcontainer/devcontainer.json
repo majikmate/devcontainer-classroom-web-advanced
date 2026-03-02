@@ -38,9 +38,7 @@
                 "extensions.ignoreRecommendations": true,
                 // Hide configuration folders from students
                 "files.exclude": {
-                    "**/.devcontainer": true,
-                    "**/.github": true,
-                    "**/.vscode": true
+                    "**/.devcontainer": true
                 },
                 "livePreview.openPreviewTarget": "External Browser",
                 "livePreview.serverRoot": "dist"
