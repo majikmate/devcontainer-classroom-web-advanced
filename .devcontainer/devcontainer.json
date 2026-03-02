@@ -1,0 +1,56 @@
+{
+    // Extends the base devcontainer configuration for classroom environment
+    "name": "Classroom Environment",
+    "image": "ghcr.io/majikmate/devcontainer-base:latest",
+    // Override common-utils to use student user
+    "features": {},
+    // Classroom-specific VS Code configuration
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                // AI extensions
+                "github.copilot",
+                "github.copilot-chat",
+                // Code quality
+                "dbaeumer.vscode-eslint",
+                "esbenp.prettier-vscode",
+                // Educational extensions
+                "ms-vscode.live-server",
+                "tyriar.lorem-ipsum",
+                "bradlc.vscode-tailwindcss",
+                "dsznajder.es7-react-js-snippets",
+                "vitest.explorer",
+                "ms-playwright.playwright"
+            ],
+            "settings": {
+                // Disable Deno extension
+                "deno.enable": false,
+                // ESLint configuration
+                "eslint.enable": true,
+                "eslint.validate": [
+                    "javascript",
+                    "javascriptreact",
+                    "typescript",
+                    "typescriptreact",
+                    "vue"
+                ],
+                "eslint.codeActionsOnSave.mode": "all",
+                // Editor formatting
+                "editor.formatOnSave": true,
+                "editor.defaultFormatter": "esbenp.prettier-vscode",
+                "editor.codeActionsOnSave": {
+                    "source.fixAll.eslint": "explicit"
+                },
+                // Disable extension recommendations
+                "extensions.ignoreRecommendations": true,
+                // Hide configuration folders from students
+                "files.exclude": {
+                    "**/.devcontainer": true,
+                    "**/.github": true,
+                    "**/.vscode": true
+                },
+                "livePreview.openPreviewTarget": "External Browser"
+            }
+        }
+    }
+}
