@@ -27,13 +27,6 @@
                 "deno.enable": false,
                 // ESLint configuration
                 "eslint.enable": true,
-                "eslint.validate": [
-                    "javascript",
-                    "javascriptreact",
-                    "typescript",
-                    "typescriptreact",
-                    "vue"
-                ],
                 "eslint.codeActionsOnSave.mode": "all",
                 // Editor formatting
                 "editor.formatOnSave": true,
@@ -49,7 +42,8 @@
                     "**/.github": true,
                     "**/.vscode": true
                 },
-                "livePreview.openPreviewTarget": "External Browser"
+                "livePreview.openPreviewTarget": "External Browser",
+                "livePreview.serverRoot": "dist"
             }
         }
     }
