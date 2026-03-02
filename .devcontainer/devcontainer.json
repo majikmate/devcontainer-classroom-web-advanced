@@ -1,6 +1,6 @@
 {
     // Extends the base devcontainer configuration for classroom environment
-    "name": "Classroom Environment",
+    "name": "Classroom Advanced Environment",
     "image": "ghcr.io/majikmate/devcontainer-base:latest",
     // Override common-utils to use student user
     "features": {},
