@@ -3,7 +3,13 @@
     "name": "Classroom Advanced Environment",
     "image": "ghcr.io/majikmate/devcontainer-base:latest",
     // Override common-utils to use student user
-    "features": {},
+    "features": {
+        "ghcr.io/majikmate/devcontainer-features/playwright-deps:1.0.0": {
+            "browsers": "all"
+        }
+    },
+    // Install Prettier globally, set global config, and format workspace files
+    "postCreateCommand": "npm install -g prettier && echo '{\"tabWidth\": 4}' > ~/.prettierrc.json && prettier --write .",
     // Classroom-specific VS Code configuration
     "customizations": {
         "vscode": {
@@ -23,14 +29,13 @@
                 "ms-playwright.playwright"
             ],
             "settings": {
-                // Disable Deno extension
-                "deno.enable": false,
                 // ESLint configuration
                 "eslint.enable": true,
                 "eslint.codeActionsOnSave.mode": "all",
                 // Editor formatting
                 "editor.formatOnSave": true,
                 "editor.defaultFormatter": "esbenp.prettier-vscode",
+                "editor.tabSize": 4,
                 "editor.codeActionsOnSave": {
                     "source.fixAll.eslint": "explicit"
                 },
