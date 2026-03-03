@@ -8,8 +8,6 @@
             "browsers": "all"
         }
     },
-    // Install Prettier globally, set global config, and format workspace files
-    "postCreateCommand": "npm install -g prettier && echo '{\"tabWidth\": 4}' > ~/.prettierrc.json && prettier --write .",
     // Classroom-specific VS Code configuration
     "customizations": {
         "vscode": {
