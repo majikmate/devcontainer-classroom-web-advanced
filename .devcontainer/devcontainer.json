@@ -30,6 +30,7 @@
                 // ESLint configuration
                 "eslint.enable": true,
                 "eslint.codeActionsOnSave.mode": "all",
+
                 // Editor formatting
                 "editor.formatOnSave": true,
                 "editor.defaultFormatter": "esbenp.prettier-vscode",
@@ -37,15 +38,20 @@
                 "editor.codeActionsOnSave": {
                     "source.fixAll.eslint": "explicit"
                 },
+
                 // Disable extension recommendations
                 "extensions.ignoreRecommendations": true,
+
                 // Hide configuration folders from students
                 "files.exclude": {
                     "**/.devcontainer": true
                 },
+
+                // Live Server configuration for better development experience
                 "livePreview.openPreviewTarget": "External Browser",
                 "livePreview.serverRoot": "dist",
 
+                // Language-specific formatting settings
                 "[html]": {
                     "editor.formatOnSave": true,
                     "editor.defaultFormatter": "esbenp.prettier-vscode"
@@ -77,7 +83,11 @@
                 "[jsonc]": {
                     "editor.formatOnSave": true,
                     "editor.defaultFormatter": "esbenp.prettier-vscode"
-                }
+                },
+
+                // GitHub Issues configuration for better issue management
+                "githubIssues.issueBranchTitle": "${user}/${sanitizedLowercaseIssueTitle}-{issueNumber}",
+                "githubIssues.issueCompletionFormatScm": "${issueTitle} Fixes ${issueNumberLabel}"
             }
         }
     }
