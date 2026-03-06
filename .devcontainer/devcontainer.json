@@ -86,7 +86,7 @@
                 },
 
                 // GitHub Issues configuration for better issue management
-                "githubIssues.issueBranchTitle": "${user}/${sanitizedLowercaseIssueTitle}-{issueNumber}",
+                "githubIssues.issueBranchTitle": "${user}/${sanitizedLowercaseIssueTitle}-${issueNumber}",
                 "githubIssues.issueCompletionFormatScm": "${issueTitle} Fixes ${issueNumberLabel}"
             }
         }
