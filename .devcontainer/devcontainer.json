@@ -86,8 +86,12 @@
                 },
 
                 // GitHub Issues configuration for better issue management
-                "githubIssues.issueBranchTitle": "${user}/${sanitizedLowercaseIssueTitle}-${issueNumber}",
-                "githubIssues.issueCompletionFormatScm": "${issueTitle} Fixes ${issueNumberLabel}"
+                "githubPullRequests.remotes": ["origin"],
+                "githubIssues.issueCompletionFormatScm": "${issueTitle} Fixes ${issueNumberLabel}",
+                "githubIssues.issueBranchTitle": "${user}/issue${issueNumber}-${sanitizedLowercaseIssueTitle}",
+                "githubIssues.workingBaseBranch": "defaultBranch",
+                "githubPullRequests.createDefaultBaseBranch": "createdFromBranch",
+                "githubPullRequests.createOnPublishBranch": "always"
             }
         }
     }
