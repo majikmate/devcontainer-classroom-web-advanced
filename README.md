@@ -1,121 +1,112 @@
 # Devcontainer Classroom Web Advanced
 
-A [Dev Container](https://containers.dev/) configuration for advanced web
-development classroom environments. This setup provides a consistent,
-pre-configured development environment with AI assistance and modern testing
-tools for educational use.
+A [Dev Container](https://containers.dev/) image for advanced web development
+in the classroom, with AI assistance and modern testing tools.
 
 Published image: `ghcr.io/majikmate/devcontainer-classroom-web-advanced`
+(linux/amd64 and linux/arm64)
 
-**Features:**
+- Built on [`devcontainer-base`](https://github.com/majikmate/devcontainer-base)
+  (`ghcr.io/majikmate/devcontainer-base:2`, Debian 13 "trixie")
+- Rebuilt and released automatically when the base image, a feature or one of
+  the tools gets a new version
+- GitHub Copilot is available (built into VS Code)
 
-- Built on top of
-  [`devcontainer-base`](https://github.com/majikmate/devcontainer-base)
-- Multi-arch support (linux/amd64 and linux/arm64)
-- Optimized for advanced web development education
-- Includes AI-assisted development tools
-- Pre-configured testing frameworks
-- Pre-configured VS Code settings for classroom use
+## Use it in an assignment repository
 
-## Included Tools & Languages
+Add `.devcontainer/devcontainer.json` to the assignment (template) repository:
 
-All runtimes and core tooling come from the base image
-(`ghcr.io/majikmate/devcontainer-base`):
+```jsonc
+{
+  "name": "Classroom Advanced",
+  "image": "ghcr.io/majikmate/devcontainer-classroom-web-advanced:2",
+}
+```
 
-### Languages & Runtimes
+- `:2` receives all compatible updates (new tool versions, security updates).
+- `:1` is the old Debian 12 "bookworm" image and gets no more updates.
 
-- **Go** - Latest version with proper formatting and linting
-- **Node.js** - LTS version with pnpm and nvm for package management
-- **Deno** - Modern TypeScript/JavaScript runtime
+New Codespaces use the current image. With a local Docker installation, the
+image stays cached. To get the newest version, run
+`docker pull ghcr.io/majikmate/devcontainer-classroom-web-advanced:2` and then
+**Dev Containers: Rebuild Container**.
 
-### Development Tools
+## Included tools
 
-- **Git** - Configured with classroom-optimized settings for smooth workflows
-- **VS Code Extensions**:
-  - [GitHub Copilot](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot)
-    — AI-powered code completions
-  - [GitHub Copilot Chat](https://marketplace.visualstudio.com/items?itemName=GitHub.copilot-chat)
-    — AI-powered chat assistance
-  - [Live Server](https://marketplace.visualstudio.com/items?itemName=ms-vscode.live-server)
-    — real-time browser preview, opens in external browser
-  - [Lorem Ipsum](https://marketplace.visualstudio.com/items?itemName=tyriar.lorem-ipsum)
-    — placeholder text generator
-  - [Tailwind CSS IntelliSense](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss)
-    — autocomplete for Tailwind classes
-  - [ES7+ React/Redux/React-Native Snippets](https://marketplace.visualstudio.com/items?itemName=dsznajder.es7-react-js-snippets)
-    — shorthand snippets for React, Redux, and related patterns
-  - [Vitest](https://marketplace.visualstudio.com/items?itemName=vitest.explorer)
-    — testing framework integration
-  - [Playwright](https://marketplace.visualstudio.com/items?itemName=ms-playwright.playwright)
-    — end-to-end testing tools
+From the base image:
 
-### Classroom-Optimized Configuration
+- **Node.js** — newest LTS release, with npm and pnpm
+- **Deno** — newest LTS release, the JavaScript/TypeScript runtime and language
+  server in VS Code
+- **Go** — newest release
+- **Prettier** — the only formatter, standard style, Tailwind CSS class sorting
+- **Git** — configured for simple workflows (auto fetch, rebase on sync)
 
-- GitHub Copilot enabled for AI-assisted learning and development
-- Extension recommendations suppressed
-- Configuration folders (`.devcontainer`, `.github`, `.vscode`) hidden from
-  students to reduce clutter
+Added by this image:
 
-## Getting Started
+- **Playwright browser dependencies** — the native libraries for Chromium,
+  Firefox and WebKit (feature `playwright-deps:1`). Playwright itself is
+  installed in each project (`npm install -D @playwright/test`).
 
-### Prerequisites
+The exact versions of each release are listed in its
+[release notes](https://github.com/majikmate/devcontainer-classroom-web-advanced/releases).
 
-- [Docker](https://www.docker.com/get-started) installed on your system
-- [VS Code](https://code.visualstudio.com/) with the
-  [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
+### Formatting and code quality
 
-### Using This Dev Container
+- Files are formatted with Prettier when they are saved, with the **standard
+  Prettier style** and 2-space indentation. **Tailwind CSS classes are sorted**
+  into the standard order. A project with its own Prettier configuration uses
+  that file instead.
+- ESLint fixes all fixable problems on save (`source.fixAll.eslint`).
 
-1. **Clone or use as template**: Clone this repository or use it as a GitHub
-   template for your classroom project
+### VS Code extensions
 
-2. **Open in VS Code**: Open the project folder in VS Code
+In addition to the extensions of the base image (Go, Deno, Prettier, Markdown
+preview, PlantUML, PDF viewer):
 
-3. **Reopen in Container**: When prompted, click "Reopen in Container" or use
-   the command palette (`Ctrl+Shift+P` / `Cmd+Shift+P`) and select "Dev
-   Containers: Reopen in Container"
+- [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
+- [GitHub Pull Requests](https://marketplace.visualstudio.com/items?itemName=GitHub.vscode-pull-request-github)
+  — issues and pull requests (branch names and pull request defaults are
+  pre-configured)
+- [Live Preview](https://marketplace.visualstudio.com/items?itemName=ms-vscode.live-server)
+  — opens in the external browser and serves the `dist` folder
+- [Lorem Ipsum](https://marketplace.visualstudio.com/items?itemName=tyriar.lorem-ipsum)
+- [Tailwind CSS IntelliSense](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss)
+- [ES7+ React/Redux/React-Native Snippets](https://marketplace.visualstudio.com/items?itemName=dsznajder.es7-react-js-snippets)
+- [Vitest](https://marketplace.visualstudio.com/items?itemName=vitest.explorer)
+- [Playwright Test](https://marketplace.visualstudio.com/items?itemName=ms-playwright.playwright)
 
-4. **Wait for setup**: The container will pull and start automatically (first
-   time may take a few minutes)
+GitHub Copilot is built into VS Code and needs no extension. Students need
+Copilot access, for example free through
+[GitHub Education](https://education.github.com/).
 
-### For Instructors
+### Classroom settings
 
-This configuration is designed to provide students with a consistent, advanced
-development environment. Key benefits:
+- Extension recommendations are turned off.
+- The folder `.devcontainer` is hidden.
+- The user in the container is `dev`.
 
-- No need for students to install development tools locally
-- Consistent environment across different operating systems (amd64 & arm64)
-- AI-assisted development with GitHub Copilot (requires student licenses)
-- Modern testing tools (Vitest, Playwright) pre-installed
-- Hidden config folders keep the workspace clutter-free for students
+## Automatic releases
 
-**Note:** Students will need GitHub Copilot access (available free through
-[GitHub Education](https://education.github.com/)) to use AI features.
+The workflow [`.github/workflows/release.yml`](.github/workflows/release.yml)
+uses the shared workflow of `devcontainer-base` (described in its
+[README](https://github.com/majikmate/devcontainer-base#automatic-releases)):
 
-### Customization
+- Every hour it checks whether the inputs of the image changed: the
+  `.devcontainer` folder, the digest of the base image and the digest of the
+  `playwright-deps` feature. The base image itself is rebuilt when a tool gets a
+  new version, so new tool versions reach this image within about two hours.
+- A push to `main` with changes in `.devcontainer` releases a new version.
+- Pull requests are built and tested (both architectures) without publishing.
+- A tag `vX.Y.Z` releases exactly this version; the manual run ("Run
+  workflow") can force a release.
 
-Modify the development container by editing `.devcontainer/devcontainer.json`:
+Each release is built without cache, tested inside the container (Debian
+release, versions, Prettier with Tailwind CSS sorting, Playwright libraries),
+and gets the tags `X.Y.Z`, `X.Y`, `X` and `latest` and a GitHub release with the
+installed versions.
 
-- Add or remove VS Code extensions in the `extensions` array
-- Adjust VS Code settings under `customizations.vscode.settings`
+## Customization
 
-## CI/CD
-
-A GitHub Actions workflow (`.github/workflows/publish-devcontainer.yml`)
-automatically builds and publishes the container image to the GitHub Container
-Registry:
-
-- **On push to `main`**: Builds both architectures and updates the build cache
-- **On version tag (`v*`)**: Builds, pushes per-arch images, and creates a
-  multi-arch manifest with `latest` and semver tags
-- **On pull request** (touching `.devcontainer/**` or `.github/**`): Build-only
-  validation without pushing
-
-## Contributing
-
-When contributing to this classroom environment:
-
-1. Test changes thoroughly in a development container
-2. Update documentation as needed
-3. Consider the impact on student experience
-4. Ensure consistency across different platforms
+Edit `.devcontainer/devcontainer.json` through a pull request. After the merge,
+the new image is released automatically.

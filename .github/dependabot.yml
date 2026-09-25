@@ -1,17 +1,24 @@
 version: 2
 updates:
+  # New major versions of the features
   - package-ecosystem: "devcontainers"
-    directory: "/" # Location of your .devcontainer folder
+    directory: "/"
     schedule:
-      interval: "daily" # Can be "daily", "weekly", or "monthly"
+      interval: "weekly"
     commit-message:
-      prefix: "feat(dev)"
-      include: "scope"
+      prefix: "feat(devcontainer)"
 
+  # New major versions of the base image
   - package-ecosystem: "docker"
     directory: "/.devcontainer"
     schedule:
-      interval: "daily"
+      interval: "weekly"
     commit-message:
-      prefix: "feat(dev)"
-      include: "scope"
+      prefix: "feat(devcontainer)"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "ci"

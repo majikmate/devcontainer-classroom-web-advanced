@@ -1,0 +1,62 @@
+# Builds, tests and releases ghcr.io/majikmate/devcontainer-classroom-web-advanced.
+# The logic is in the shared workflow of devcontainer-base:
+# https://github.com/majikmate/devcontainer-base/blob/main/.github/workflows/devcontainer-image.yml
+name: Release
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+  # Hourly check: a new base image or a new feature version leads to a new release
+  schedule:
+    - cron: "57 * * * *"
+  workflow_dispatch:
+    inputs:
+      force:
+        description: Release a new version even if no input changed
+        type: boolean
+        default: false
+      bump:
+        description: Version step
+        type: choice
+        options: [auto, patch, minor, major]
+        default: auto
+
+# One release at a time; pull requests cancel their older runs
+concurrency:
+  group: ${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.pull_request.number) || 'release' }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  image:
+    uses: majikmate/devcontainer-base/.github/workflows/devcontainer-image.yml@main
+    permissions:
+      contents: write
+      packages: write
+      actions: write
+    with:
+      image-title: DevContainer Classroom Web Advanced
+      image-description: Advanced classroom Dev Container for web development (Debian 13, Node.js LTS, Deno LTS, Prettier with Tailwind CSS sorting, ESLint, Vitest, Playwright) with AI assistance
+      # Same major version as the base image in .devcontainer/Dockerfile
+      major-version: 2
+      force: ${{ inputs.force || false }}
+      bump: ${{ inputs.bump || 'auto' }}
+      smoke-test: |
+        set -e
+        . /etc/os-release
+        echo "debian: ${PRETTY_NAME}"
+        test "${VERSION_CODENAME}" = "trixie"
+        echo "user: $(whoami)"
+        echo "version: node=$(node --version)"
+        echo "version: deno=$(deno --version | head -n 1 | cut -d ' ' -f 2)"
+        echo "version: go=$(go env GOVERSION | sed 's/^go//')"
+        echo "version: prettier=$(prettier --version)"
+        echo "--- Prettier: standard style and Tailwind CSS class sorting"
+        mkdir -p /tmp/smoke && cd /tmp/smoke
+        printf '<div class="text-center p-4 flex card"></div>\n' > index.html
+        prettier index.html | tee /dev/stderr | grep -F 'class="card flex p-4 text-center"'
+        echo "--- Playwright browser dependencies (a sample of the native libraries)"
+        for lib in libnss3.so libatk-1.0.so.0 libgbm.so.1 libgtk-3.so.0; do
+          /sbin/ldconfig -p | grep -q "${lib}" || { echo "missing ${lib}"; exit 1; }
+        done
