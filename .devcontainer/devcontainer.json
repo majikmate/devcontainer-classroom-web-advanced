@@ -1,98 +1,84 @@
+// Advanced classroom environment for web development (AI assistance, ESLint,
+// Vitest, Playwright). Extends ghcr.io/majikmate/devcontainer-base:2 (see
+// .devcontainer/Dockerfile). Formatting (Prettier, standard style, Tailwind CSS
+// class sorting) comes from the base image.
+// Documentation: https://github.com/majikmate/devcontainer-classroom-web-advanced#readme
 {
-    // Extends the base devcontainer configuration for classroom environment
-    "name": "Classroom Advanced Environment",
-    "image": "ghcr.io/majikmate/devcontainer-base:latest",
-    // Override common-utils to use student user
-    "features": {
-        "ghcr.io/majikmate/devcontainer-features/playwright-deps:1.0.0": {
-            "browsers": "all"
-        }
-    },
-    // Classroom-specific VS Code configuration
-    "customizations": {
-        "vscode": {
-            "extensions": [
-                // AI extensions
-                "github.copilot",
-                "github.copilot-chat",
-                // Code quality
-                "dbaeumer.vscode-eslint",
-                "esbenp.prettier-vscode",
-                // Educational extensions
-                "ms-vscode.live-server",
-                "tyriar.lorem-ipsum",
-                "bradlc.vscode-tailwindcss",
-                "dsznajder.es7-react-js-snippets",
-                "vitest.explorer",
-                "ms-playwright.playwright"
-            ],
-            "settings": {
-                // ESLint configuration
-                "eslint.enable": true,
-                "eslint.codeActionsOnSave.mode": "all",
-
-                // Editor formatting
-                "editor.formatOnSave": true,
-                "editor.defaultFormatter": "esbenp.prettier-vscode",
-                "editor.tabSize": 4,
-                "editor.codeActionsOnSave": {
-                    "source.fixAll.eslint": "explicit"
-                },
-
-                // Disable extension recommendations
-                "extensions.ignoreRecommendations": true,
-
-                // Hide configuration folders from students
-                "files.exclude": {
-                    "**/.devcontainer": true
-                },
-
-                // Live Server configuration for better development experience
-                "livePreview.openPreviewTarget": "External Browser",
-                "livePreview.serverRoot": "dist",
-
-                // Language-specific formatting settings
-                "[html]": {
-                    "editor.formatOnSave": true,
-                    "editor.defaultFormatter": "esbenp.prettier-vscode"
-                },
-                "[css]": {
-                    "editor.formatOnSave": true,
-                    "editor.defaultFormatter": "esbenp.prettier-vscode"
-                },
-                "[javascript]": {
-                    "editor.formatOnSave": true,
-                    "editor.defaultFormatter": "esbenp.prettier-vscode"
-                },
-                "[typescript]": {
-                    "editor.formatOnSave": true,
-                    "editor.defaultFormatter": "esbenp.prettier-vscode"
-                },
-                "[javascriptreact]": {
-                    "editor.formatOnSave": true,
-                    "editor.defaultFormatter": "esbenp.prettier-vscode"
-                },
-                "[typescriptreact]": {
-                    "editor.formatOnSave": true,
-                    "editor.defaultFormatter": "esbenp.prettier-vscode"
-                },
-                "[json]": {
-                    "editor.formatOnSave": true,
-                    "editor.defaultFormatter": "esbenp.prettier-vscode"
-                },
-                "[jsonc]": {
-                    "editor.formatOnSave": true,
-                    "editor.defaultFormatter": "esbenp.prettier-vscode"
-                },
-
-                // GitHub Issues configuration for better issue management
-                "githubPullRequests.remotes": ["origin"],
-                "githubIssues.issueCompletionFormatScm": "${issueTitle} Fixes ${issueNumberLabel}",
-                "githubIssues.issueBranchTitle": "${user}/issue${issueNumber}-${sanitizedLowercaseIssueTitle}",
-                "githubIssues.workingBaseBranch": "defaultBranch",
-                "githubPullRequests.createDefaultBaseBranch": "createdFromBranch",
-                "githubPullRequests.createOnPublishBranch": "always"
-            }
-        }
+  "name": "Classroom Advanced Environment",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "args": {
+      // Image metadata, set by the release workflow
+      "OCI_IMAGE_TITLE": "${localEnv:OCI_IMAGE_TITLE}",
+      "OCI_IMAGE_DESCRIPTION": "${localEnv:OCI_IMAGE_DESCRIPTION}",
+      "OCI_IMAGE_VERSION": "${localEnv:OCI_IMAGE_VERSION}",
+      "OCI_IMAGE_REVISION": "${localEnv:OCI_IMAGE_REVISION}",
+      "OCI_IMAGE_REF_NAME": "${localEnv:OCI_IMAGE_REF_NAME}",
+      "OCI_IMAGE_SOURCE": "${localEnv:OCI_IMAGE_SOURCE}",
+      "OCI_IMAGE_URL": "${localEnv:OCI_IMAGE_URL}",
+      "OCI_IMAGE_DOCUMENTATION": "${localEnv:OCI_IMAGE_DOCUMENTATION}",
+      "OCI_IMAGE_CREATED": "${localEnv:OCI_IMAGE_CREATED}",
+      "OCI_IMAGE_AUTHORS": "${localEnv:OCI_IMAGE_AUTHORS}",
+      "OCI_IMAGE_VENDOR": "${localEnv:OCI_IMAGE_VENDOR}",
+      "OCI_IMAGE_LICENSES": "${localEnv:OCI_IMAGE_LICENSES}",
+      "DEVCONTAINER_INPUTS": "${localEnv:DEVCONTAINER_INPUTS}",
+      "DEVCONTAINER_FINGERPRINT": "${localEnv:DEVCONTAINER_FINGERPRINT}"
     }
+  },
+  // The user is "dev" (from the base image)
+  "features": {
+    // Native libraries for the Playwright browsers (pinned by major version)
+    "ghcr.io/majikmate/devcontainer-features/playwright-deps:1": {
+      "browsers": "all"
+    }
+  },
+  // Classroom-specific VS Code configuration (added to the base configuration)
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        // AI: GitHub Copilot (chat, inline suggestions) is built into VS Code
+        // and enabled in this image; students sign in with their GitHub account.
+        // Code quality
+        "dbaeumer.vscode-eslint",
+        // Issues and pull requests (used by the githubIssues/githubPullRequests settings)
+        "github.vscode-pull-request-github",
+        // Educational extensions
+        "ms-vscode.live-server",
+        "tyriar.lorem-ipsum",
+        "bradlc.vscode-tailwindcss",
+        "dsznajder.es7-react-js-snippets",
+        // Testing
+        "vitest.explorer",
+        "ms-playwright.playwright"
+      ],
+      "settings": {
+        // ESLint: fix all problems on save (Prettier formats on save, see base image)
+        "eslint.enable": true,
+        "eslint.codeActionsOnSave.mode": "all",
+        "editor.codeActionsOnSave": {
+          "source.fixAll.eslint": "explicit"
+        },
+
+        // Disable extension recommendations
+        "extensions.ignoreRecommendations": true,
+
+        // Hide configuration folders from students
+        "files.exclude": {
+          "**/.devcontainer": true
+        },
+
+        // Live Preview: open in the external browser, serve the build output
+        "livePreview.openPreviewTarget": "External Browser",
+        "livePreview.serverRoot": "dist",
+
+        // GitHub Issues and Pull Requests
+        "githubPullRequests.remotes": ["origin"],
+        "githubIssues.issueCompletionFormatScm": "${issueTitle} Fixes ${issueNumberLabel}",
+        "githubIssues.issueBranchTitle": "${user}/issue${issueNumber}-${sanitizedLowercaseIssueTitle}",
+        "githubIssues.workingBaseBranch": "defaultBranch",
+        "githubPullRequests.createDefaultBaseBranch": "createdFromBranch",
+        "githubPullRequests.createOnPublishBranch": "always"
+      }
+    }
+  }
 }
