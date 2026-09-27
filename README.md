@@ -81,7 +81,7 @@ Playwright itself is installed in each project
 ## Releases
 
 - **Nightly check at 03:57 UTC.** A new version is released when an input
-  changes: `.devcontainer` or the digest of `devcontainer-base:2`. Pending
+  changes: `.devcontainer`, `README.md` or the digest of `devcontainer-base:2`. Pending
   Debian updates and an age above 7 days also lead to a new version.
 - **Manual:** **Actions → Release → Run workflow**. The option `upstream` (on
   by default) first updates base and core; `force` releases without a change.
@@ -94,8 +94,10 @@ Rules: [Releases](https://github.com/majikmate/devcontainer-core#releases).
 
 ## Change the image
 
-Change `.devcontainer/` through a pull request and consider the effect on the
-students. After the merge, the new image is released automatically.
+Change `.devcontainer/` or `README.md` through a pull request and consider the
+effect on the students. After the merge, the new image is released
+automatically (GitHub shows the README of the newest image on the package
+page).
 
 ## License
 
