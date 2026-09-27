@@ -92,14 +92,18 @@ The workflow [`.github/workflows/release.yml`](.github/workflows/release.yml)
 uses the shared workflow of `devcontainer-base` (described in its
 [README](https://github.com/majikmate/devcontainer-base#automatic-releases)):
 
-- Every hour it checks whether the inputs of the image changed: the
-  `.devcontainer` folder, the digest of the base image and the digest of the
-  `playwright-deps` feature. The base image itself is rebuilt when a tool gets a
-  new version, so new tool versions reach this image within about two hours.
+- Every night at 03:57 UTC it checks whether the inputs of the image changed:
+  the `.devcontainer` folder, the digest of the base image and the digest of the
+  `playwright-deps` feature. The base image runs its check two hours earlier and
+  is rebuilt when a tool gets a new version, so new tool versions reach this
+  image in the same night.
+- To check at once, open **Actions → Release → Run workflow** and keep the
+  default options. It runs the same check. The option `force` releases a new
+  version without a change. After a manual base image release, run this check
+  to take over the new base image before the next night.
 - A push to `main` with changes in `.devcontainer` releases a new version.
 - Pull requests are built and tested (both architectures) without publishing.
-- A tag `vX.Y.Z` releases exactly this version; the manual run ("Run
-  workflow") can force a release.
+- A tag `vX.Y.Z` releases exactly this version.
 
 Each release is built without cache, tested inside the container (Debian
 release, versions, Prettier with Tailwind CSS sorting, Playwright libraries),
