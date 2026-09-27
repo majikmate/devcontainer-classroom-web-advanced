@@ -6,31 +6,7 @@
 {
   "name": "Classroom Advanced Environment",
   "build": {
-    "dockerfile": "Dockerfile",
-    "args": {
-      // Image metadata, set by the release workflow
-      "OCI_IMAGE_TITLE": "${localEnv:OCI_IMAGE_TITLE}",
-      "OCI_IMAGE_DESCRIPTION": "${localEnv:OCI_IMAGE_DESCRIPTION}",
-      "OCI_IMAGE_VERSION": "${localEnv:OCI_IMAGE_VERSION}",
-      "OCI_IMAGE_REVISION": "${localEnv:OCI_IMAGE_REVISION}",
-      "OCI_IMAGE_REF_NAME": "${localEnv:OCI_IMAGE_REF_NAME}",
-      "OCI_IMAGE_SOURCE": "${localEnv:OCI_IMAGE_SOURCE}",
-      "OCI_IMAGE_URL": "${localEnv:OCI_IMAGE_URL}",
-      "OCI_IMAGE_DOCUMENTATION": "${localEnv:OCI_IMAGE_DOCUMENTATION}",
-      "OCI_IMAGE_CREATED": "${localEnv:OCI_IMAGE_CREATED}",
-      "OCI_IMAGE_AUTHORS": "${localEnv:OCI_IMAGE_AUTHORS}",
-      "OCI_IMAGE_VENDOR": "${localEnv:OCI_IMAGE_VENDOR}",
-      "OCI_IMAGE_LICENSES": "${localEnv:OCI_IMAGE_LICENSES}",
-      "DEVCONTAINER_INPUTS": "${localEnv:DEVCONTAINER_INPUTS}",
-      "DEVCONTAINER_FINGERPRINT": "${localEnv:DEVCONTAINER_FINGERPRINT}"
-    }
-  },
-  // The user is "dev" (from the base image)
-  "features": {
-    // Native libraries for the Playwright browsers (pinned by major version)
-    "ghcr.io/majikmate/devcontainer-features/playwright-deps:1": {
-      "browsers": "all"
-    }
+    "dockerfile": "Dockerfile"
   },
   // Classroom-specific VS Code configuration (added to the base configuration)
   "customizations": {
