@@ -92,14 +92,23 @@ The workflow [`.github/workflows/release.yml`](.github/workflows/release.yml)
 uses the shared workflow of `devcontainer-base` (described in its
 [README](https://github.com/majikmate/devcontainer-base#automatic-releases)):
 
-- Every hour it checks whether the inputs of the image changed: the
-  `.devcontainer` folder, the digest of the base image and the digest of the
-  `playwright-deps` feature. The base image itself is rebuilt when a tool gets a
-  new version, so new tool versions reach this image within about two hours.
+- Every night at 03:57 UTC it checks whether the inputs of the image changed:
+  the `.devcontainer` folder, the digest of the base image and the digest of the
+  `playwright-deps` feature. The base image runs its check two hours earlier and
+  is rebuilt when a tool gets a new version, so new tool versions reach this
+  image in the same night.
+- To get a new image at once, open **Actions → Release → Run workflow** and
+  keep the default options. With the option `upstream` (on by default), the run
+  first starts the Release workflow of devcontainer-base and waits for it. The
+  base image gets a new release only if one of its inputs changed, for example
+  a new Go, Node.js or Deno version. Then the run checks this image and
+  releases a new version if an input changed. The option `force` releases a new
+  version of this image without a change. See
+  [Chain build](https://github.com/majikmate/devcontainer-base#chain-build) for
+  the one-time setup of the GitHub App.
 - A push to `main` with changes in `.devcontainer` releases a new version.
 - Pull requests are built and tested (both architectures) without publishing.
-- A tag `vX.Y.Z` releases exactly this version; the manual run ("Run
-  workflow") can force a release.
+- A tag `vX.Y.Z` releases exactly this version.
 
 Each release is built without cache, tested inside the container (Debian
 release, versions, Prettier with Tailwind CSS sorting, Playwright libraries),
