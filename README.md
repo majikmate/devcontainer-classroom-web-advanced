@@ -7,9 +7,10 @@ Published image: `ghcr.io/majikmate/devcontainer-classroom-web-advanced`
 (linux/amd64 and linux/arm64)
 
 - Built on [`devcontainer-base`](https://github.com/majikmate/devcontainer-base)
-  (`ghcr.io/majikmate/devcontainer-base:2`, Debian 13 "trixie")
-- Rebuilt and released automatically when the base image, a feature or one of
-  the tools gets a new version
+  (`ghcr.io/majikmate/devcontainer-base:2`, Debian 13 "trixie"), which builds on
+  [`devcontainer-core`](https://github.com/majikmate/devcontainer-core)
+- Rebuilt and released automatically when the base image or one of the tools
+  gets a new version
 - GitHub Copilot is available (built into VS Code)
 
 ## Use it in an assignment repository
@@ -35,7 +36,7 @@ image stays cached. To get the newest version, run
 
 From the base image:
 
-- **Node.js** — newest LTS release, with npm and pnpm
+- **Node.js** — newest LTS release, with npm (no pnpm)
 - **Deno** — newest LTS release, the JavaScript/TypeScript runtime and language
   server in VS Code
 - **Go** — newest release
@@ -45,7 +46,8 @@ From the base image:
 Added by this image:
 
 - **Playwright browser dependencies** — the native libraries for Chromium,
-  Firefox and WebKit (feature `playwright-deps:1`). Playwright itself is
+  Firefox and WebKit (layer `playwright-deps` of devcontainer-core, one line in
+  [`.devcontainer/Dockerfile`](.devcontainer/Dockerfile)). Playwright itself is
   installed in each project (`npm install -D @playwright/test`).
 
 The exact versions of each release are listed in its
@@ -62,7 +64,7 @@ The exact versions of each release are listed in its
 ### VS Code extensions
 
 In addition to the extensions of the base image (Go, Deno, Prettier, Markdown
-preview, PlantUML, PDF viewer):
+preview, PlantUML):
 
 - [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
 - [GitHub Pull Requests](https://marketplace.visualstudio.com/items?itemName=GitHub.vscode-pull-request-github)
@@ -89,29 +91,30 @@ Copilot access, for example free through
 ## Automatic releases
 
 The workflow [`.github/workflows/release.yml`](.github/workflows/release.yml)
-uses the shared workflow of `devcontainer-base` (described in its
-[README](https://github.com/majikmate/devcontainer-base#automatic-releases)):
+uses the shared workflow of `devcontainer-core` (described in its
+[README](https://github.com/majikmate/devcontainer-core#releases)):
 
 - Every night at 03:57 UTC it checks whether the inputs of the image changed:
-  the `.devcontainer` folder, the digest of the base image and the digest of the
-  `playwright-deps` feature. The base image runs its check two hours earlier and
-  is rebuilt when a tool gets a new version, so new tool versions reach this
-  image in the same night.
+  the `.devcontainer` folder and the digest of the base image. The base image
+  runs its check two hours earlier and is rebuilt when a tool gets a new
+  version, so new tool versions reach this image in the same night.
 - To get a new image at once, open **Actions → Release → Run workflow** and
   keep the default options. With the option `upstream` (on by default), the run
-  first starts the Release workflow of devcontainer-base and waits for it. The
-  base image gets a new release only if one of its inputs changed, for example
-  a new Go, Node.js or Deno version. Then the run checks this image and
+  first starts the Release workflow of devcontainer-base and waits for it;
+  devcontainer-base first starts devcontainer-core in the same way. Each image
+  in the chain gets a new release only if one of its inputs changed, for
+  example a new Go, Node.js or Deno version. Then the run checks this image and
   releases a new version if an input changed. The option `force` releases a new
   version of this image without a change. See
-  [Chain build](https://github.com/majikmate/devcontainer-base#chain-build) for
-  the one-time setup of the GitHub App.
+  [Schedule and chain build](https://github.com/majikmate/devcontainer-core#schedule-and-chain-build)
+  for the GitHub App.
 - A push to `main` with changes in `.devcontainer` releases a new version.
 - Pull requests are built and tested (both architectures) without publishing.
 - A tag `vX.Y.Z` releases exactly this version.
 
-Each release is built without cache, tested inside the container (Debian
-release, versions, Prettier with Tailwind CSS sorting, Playwright libraries),
+Each release is built without cache, tested inside the container (the tests of
+all layers: user, SSH server, Go, Node.js, Deno, Prettier with Tailwind CSS
+sorting, Playwright libraries),
 and gets the tags `X.Y.Z`, `X.Y`, `X` and `latest` and a GitHub release with the
 installed versions.
 

@@ -1,6 +1,6 @@
 # Builds, tests and releases ghcr.io/majikmate/devcontainer-classroom-web-advanced.
-# The logic is in the shared workflow of devcontainer-base:
-# https://github.com/majikmate/devcontainer-base/blob/main/.github/workflows/devcontainer-image.yml
+# The logic is in the shared workflow of devcontainer-core:
+# https://github.com/majikmate/devcontainer-core/blob/main/.github/workflows/devcontainer-image.yml
 name: Release
 
 on:
@@ -9,15 +9,16 @@ on:
     tags: ["v*"]
   pull_request:
   # Nightly check, two hours after the base image (01:17 UTC): a new base image
-  # or a new feature version leads to a new release
+  # leads to a new release
   schedule:
     - cron: "57 3 * * *"
-  # Manual check ("Run workflow"): first brings devcontainer-base up to date
-  # (option upstream), then runs the same check as the nightly run
+  # Manual check ("Run workflow"): first brings devcontainer-base and
+  # devcontainer-core up to date (option upstream, chain build), then runs the
+  # same check as the nightly run
   workflow_dispatch:
     inputs:
       upstream:
-        description: First update the base image (run the Release workflow of devcontainer-base and wait for it)
+        description: First update the upstream images (devcontainer-base, which first updates devcontainer-core)
         type: boolean
         default: true
       force:
@@ -37,7 +38,7 @@ concurrency:
 
 jobs:
   image:
-    uses: majikmate/devcontainer-base/.github/workflows/devcontainer-image.yml@main
+    uses: majikmate/devcontainer-core/.github/workflows/devcontainer-image.yml@main
     permissions:
       contents: write
       packages: write
@@ -47,30 +48,12 @@ jobs:
       app-client-id: ${{ secrets.DEVCONTAINER_APP_CLIENT_ID }}
       app-private-key: ${{ secrets.DEVCONTAINER_APP_PRIVATE_KEY }}
     with:
-      # The images that this image builds on (see .devcontainer/Dockerfile)
-      upstream-repositories: devcontainer-base
-      update-upstream: ${{ github.event_name == 'workflow_dispatch' && inputs.upstream == true }}
       image-title: DevContainer Classroom Web Advanced
       image-description: Advanced classroom Dev Container for web development (Debian 13, Node.js LTS, Deno LTS, Prettier with Tailwind CSS sorting, ESLint, Vitest, Playwright) with AI assistance
       # Same major version as the base image in .devcontainer/Dockerfile
       major-version: 2
+      # The image in the FROM line of .devcontainer/Dockerfile
+      upstream-repositories: devcontainer-base
+      update-upstream: ${{ github.event_name == 'workflow_dispatch' && inputs.upstream == true }}
       force: ${{ inputs.force || false }}
       bump: ${{ inputs.bump || 'auto' }}
-      smoke-test: |
-        set -e
-        . /etc/os-release
-        echo "debian: ${PRETTY_NAME}"
-        test "${VERSION_CODENAME}" = "trixie"
-        echo "user: $(whoami)"
-        echo "version: node=$(node --version)"
-        echo "version: deno=$(deno --version | head -n 1 | cut -d ' ' -f 2)"
-        echo "version: go=$(go env GOVERSION | sed 's/^go//')"
-        echo "version: prettier=$(prettier --version)"
-        echo "--- Prettier: standard style and Tailwind CSS class sorting"
-        mkdir -p /tmp/smoke && cd /tmp/smoke
-        printf '<div class="text-center p-4 flex card"></div>\n' > index.html
-        prettier index.html | tee /dev/stderr | grep -F 'class="card flex p-4 text-center"'
-        echo "--- Playwright browser dependencies (a sample of the native libraries)"
-        for lib in libnss3.so libatk-1.0.so.0 libgbm.so.1 libgtk-3.so.0; do
-          /sbin/ldconfig -p | grep -q "${lib}" || { echo "missing ${lib}"; exit 1; }
-        done

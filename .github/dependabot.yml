@@ -1,13 +1,5 @@
 version: 2
 updates:
-  # New major versions of the features
-  - package-ecosystem: "devcontainers"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-    commit-message:
-      prefix: "feat(devcontainer)"
-
   # New major versions of the base image
   - package-ecosystem: "docker"
     directory: "/.devcontainer"
