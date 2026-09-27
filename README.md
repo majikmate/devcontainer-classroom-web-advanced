@@ -25,7 +25,7 @@ Add `.devcontainer/devcontainer.json` to the assignment (template) repository:
 ```
 
 - `:2` receives all compatible updates (new tool versions, security updates).
-- `:1` is the old Debian 12 "bookworm" image and gets no more updates.
+- The former `:1` images (Debian 12 "bookworm") are deleted.
 
 New Codespaces use the current image. With a local Docker installation, the
 image stays cached. To get the newest version, run
@@ -117,6 +117,20 @@ all layers: user, SSH server, Go, Node.js, Deno, Prettier with Tailwind CSS
 sorting, Playwright libraries),
 and gets the tags `X.Y.Z`, `X.Y`, `X` and `latest` and a GitHub release with the
 installed versions.
+
+### Kept package versions
+
+After every release run, the outdated versions of the image package are
+deleted (rules: [Releases](https://github.com/majikmate/devcontainer-core#releases)):
+
+- releases older than 90 days; the newest release and the tags `2`, `2.x` and
+  `latest` are always kept,
+- versions of older major lines and untagged versions that no image uses.
+
+A full version (for example `:2.0.3`) stays available for at least 90 days
+after its release. The manual workflow **Actions → Prune → Run workflow** lists
+(`report`) or deletes (`apply`) the outdated versions at once; the scope
+`all-but-newest` deletes every release except the newest.
 
 ## Customization
 
