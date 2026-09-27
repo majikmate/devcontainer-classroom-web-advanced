@@ -12,9 +12,14 @@ on:
   # or a new feature version leads to a new release
   schedule:
     - cron: "57 3 * * *"
-  # Manual check ("Run workflow"): the same check as the nightly run, at once
+  # Manual check ("Run workflow"): first brings devcontainer-base up to date
+  # (option upstream), then runs the same check as the nightly run
   workflow_dispatch:
     inputs:
+      upstream:
+        description: First update the base image (run the Release workflow of devcontainer-base and wait for it)
+        type: boolean
+        default: true
       force:
         description: Release a new version even if no input changed
         type: boolean
@@ -37,7 +42,14 @@ jobs:
       contents: write
       packages: write
       actions: write
+    # GitHub App that starts the Release workflow of devcontainer-base (manual chain build)
+    secrets:
+      app-client-id: ${{ secrets.DEVCONTAINER_APP_CLIENT_ID }}
+      app-private-key: ${{ secrets.DEVCONTAINER_APP_PRIVATE_KEY }}
     with:
+      # The images that this image builds on (see .devcontainer/Dockerfile)
+      upstream-repositories: devcontainer-base
+      update-upstream: ${{ github.event_name == 'workflow_dispatch' && inputs.upstream == true }}
       image-title: DevContainer Classroom Web Advanced
       image-description: Advanced classroom Dev Container for web development (Debian 13, Node.js LTS, Deno LTS, Prettier with Tailwind CSS sorting, ESLint, Vitest, Playwright) with AI assistance
       # Same major version as the base image in .devcontainer/Dockerfile

@@ -97,10 +97,15 @@ uses the shared workflow of `devcontainer-base` (described in its
   `playwright-deps` feature. The base image runs its check two hours earlier and
   is rebuilt when a tool gets a new version, so new tool versions reach this
   image in the same night.
-- To check at once, open **Actions → Release → Run workflow** and keep the
-  default options. It runs the same check. The option `force` releases a new
-  version without a change. After a manual base image release, run this check
-  to take over the new base image before the next night.
+- To get a new image at once, open **Actions → Release → Run workflow** and
+  keep the default options. With the option `upstream` (on by default), the run
+  first starts the Release workflow of devcontainer-base and waits for it. The
+  base image gets a new release only if one of its inputs changed, for example
+  a new Go, Node.js or Deno version. Then the run checks this image and
+  releases a new version if an input changed. The option `force` releases a new
+  version of this image without a change. See
+  [Chain build](https://github.com/majikmate/devcontainer-base#chain-build) for
+  the one-time setup of the GitHub App.
 - A push to `main` with changes in `.devcontainer` releases a new version.
 - Pull requests are built and tested (both architectures) without publishing.
 - A tag `vX.Y.Z` releases exactly this version.
