@@ -52,7 +52,7 @@ Add `.devcontainer/devcontainer.json` to the assignment (template) repository:
 | Layer | Content | Version |
 | ----- | ------- | ------- |
 | (devcontainer-base) | Debian 13, user `dev`, zsh, SSH server; Go, Node.js with npm, Deno, Prettier with Tailwind CSS class sorting | see [base](https://github.com/majikmate/devcontainer-base#content) |
-| `playwright-deps` | native libraries of the Playwright browsers Chromium, Firefox and WebKit | Debian packages |
+| `playwright-deps` | native libraries of the Playwright browsers Chromium, Firefox and WebKit | Debian packages of the Debian release ([`debianPin`](https://github.com/majikmate/devcontainer-core/blob/main/pkg/layers/os.go#L31-L34)) |
 
 Playwright itself is installed in each project
 (`npm install -D @playwright/test`).
@@ -100,6 +100,6 @@ effect on the students. After the merge, the new image is released
 automatically (GitHub shows the README of the newest image on the package
 page).
 
-## License
+---
 
-MIT
+© 2026 Hannes Stauss (scalarion@nimblescape.com) · [MIT License](LICENSE).
