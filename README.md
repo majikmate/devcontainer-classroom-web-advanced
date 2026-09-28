@@ -13,12 +13,12 @@ linux/amd64, linux/arm64 ·
                                                Nightly Content
 devcontainer-features                                  Go library of layers, compiled into devcon
   ▼
-devcontainer-core:1                            23:17   Debian 13, devcon, user dev, zsh, SSH server
-├── devcontainer-base:2                        01:17   + go, build-tools, node, deno, prettier
-│   ├── devcontainer-dev:2                     03:37   + github-cli
-│   ├── devcontainer-classroom-web:2           03:47   classroom settings, AI off
-│   └── devcontainer-classroom-web-advanced:2  03:57   + playwright-deps, AI on
-└── devcontainer-classroom-exam-ts:2           01:27   + deno, AI and coding assistance off
+devcontainer-core:1                            22:17   Debian 13, devcon, user dev, zsh, SSH server
+├── devcontainer-base:2                        23:17   + go, build-tools, node, deno, prettier, vscode-server
+│   ├── devcontainer-dev:2                     23:57   + github-cli
+│   ├── devcontainer-classroom-web:2           00:07   classroom settings, AI off
+│   └── devcontainer-classroom-web-advanced:2  00:17   + playwright-deps, AI on
+└── devcontainer-classroom-exam-ts:2           23:47   + deno, AI and coding assistance off
 ```
 
 This repository: **devcontainer-classroom-web-advanced**. Nightly checks in
@@ -80,7 +80,7 @@ Playwright itself is installed in each project
 
 ## Releases
 
-- **Nightly check at 03:57 UTC.** A new version is released when an input
+- **Nightly check at 00:17 UTC** (02:17 CEST). A new version is released when an input
   changes: `.devcontainer`, `README.md` or the digest of `devcontainer-base:2`. Pending
   Debian updates and an age above 7 days also lead to a new version.
 - **Manual:** **Actions → Release → Run workflow**. The option `upstream` (on
