@@ -16,8 +16,8 @@ devcontainer-features                                  Go library of layers, com
 devcontainer-core:1                            22:17   Debian 13, devcon, user dev, zsh, SSH server
 ├── devcontainer-base:2                        23:17   + go, build-tools, node, deno, prettier
 │   ├── devcontainer-dev:2                     23:57   + github-cli
-│   ├── devcontainer-classroom-web:2           00:07   classroom settings, AI off
-│   └── devcontainer-classroom-web-advanced:2  00:17   + playwright-deps, AI on
+│   ├── devcontainer-classroom-web:2           00:07   + html-validate, classroom settings, AI off
+│   └── devcontainer-classroom-web-advanced:2  00:17   + playwright-deps, html-validate, AI on
 └── devcontainer-classroom-exam-ts:2           23:47   + deno, AI and coding assistance off
 ```
 
@@ -53,6 +53,7 @@ Add `.devcontainer/devcontainer.json` to the assignment (template) repository:
 | ----- | ------- | ------- |
 | (devcontainer-base) | Debian 13, user `dev`, zsh, SSH server; Go, Node.js with npm, Deno, Prettier with Tailwind CSS class sorting | see [base](https://github.com/majikmate/devcontainer-base#content) |
 | `playwright-deps` | native libraries of the Playwright browsers Chromium, Firefox and WebKit | Debian packages of the Debian release ([`debianPin`](https://github.com/majikmate/devcontainer-core/blob/main/pkg/layers/os.go#L31-L34)) |
+| `html-validate` | VS Code extension HTML-validate (offline HTML5 validator) and the global configuration `/.htmlvalidate.json` | newest extension release from the Marketplace |
 
 Playwright itself is installed in each project
 (`npm install -D @playwright/test`).
@@ -67,7 +68,14 @@ Playwright itself is installed in each project
   [Tailwind CSS IntelliSense](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss),
   [ES7+ React Snippets](https://marketplace.visualstudio.com/items?itemName=dsznajder.es7-react-js-snippets),
   [Vitest](https://marketplace.visualstudio.com/items?itemName=vitest.explorer),
-  [Playwright Test](https://marketplace.visualstudio.com/items?itemName=ms-playwright.playwright).
+  [Playwright Test](https://marketplace.visualstudio.com/items?itemName=ms-playwright.playwright),
+  [HTML-validate](https://marketplace.visualstudio.com/items?itemName=html-validate.vscode-html-validate).
+- **HTML validation:** HTML-validate checks HTML while you type, offline, and
+  shows the problems in the editor and in the Problems view. The global
+  configuration `/.htmlvalidate.json` uses the recommended rules without the
+  style rules that conflict with Prettier (`<!doctype html>`, `<br />` are
+  valid HTML). A project can change single rules in its own
+  `.htmlvalidate.json`.
 - **Formatting and code quality:** Prettier formats on save with the standard
   Prettier style and sorts Tailwind CSS classes; ESLint fixes all fixable
   problems on save.
