@@ -26,7 +26,7 @@
         "ms-vscode.live-server",
         "tyriar.lorem-ipsum",
         "bradlc.vscode-tailwindcss",
-        "dsznajder.es7-react-js-snippets",
+        "r5n.es-js-snippets",
         // Testing
         "vitest.explorer",
         "ms-playwright.playwright"
