@@ -66,7 +66,7 @@ Playwright itself is installed in each project
   [Live Preview](https://marketplace.visualstudio.com/items?itemName=ms-vscode.live-server),
   [Lorem Ipsum](https://marketplace.visualstudio.com/items?itemName=tyriar.lorem-ipsum),
   [Tailwind CSS IntelliSense](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss),
-  [ES7+ React Snippets](https://marketplace.visualstudio.com/items?itemName=dsznajder.es7-react-js-snippets),
+  [ES JS Snippets](https://marketplace.visualstudio.com/items?itemName=r5n.es-js-snippets),
   [Vitest](https://marketplace.visualstudio.com/items?itemName=vitest.explorer),
   [Playwright Test](https://marketplace.visualstudio.com/items?itemName=ms-playwright.playwright),
   [HTML-validate](https://marketplace.visualstudio.com/items?itemName=html-validate.vscode-html-validate).
